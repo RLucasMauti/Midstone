@@ -18,7 +18,7 @@ public class TextLookAt : MonoBehaviour
             go = this.gameObject;
         }
 
-        go.transform.parent.LookAt(cam.transform);
+        go.transform.LookAt(cam.transform);
         
     }
 }

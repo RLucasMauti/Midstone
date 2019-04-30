@@ -31,7 +31,7 @@ public class DestroyAfterTime : MonoBehaviour
         }
         vel = new Vector3(x, y, z);
         rb.velocity = vel;
-        Destroy(this.gameObject, 6.0f);
+        Destroy(this.gameObject, 60.0f);
     }
 
     // Update is called once per frame

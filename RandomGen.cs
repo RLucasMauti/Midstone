@@ -8,6 +8,16 @@ public class RandomGen : MonoBehaviour
     public string numbers;
     public string[] numbersArray;
     public int randomNumber;
+    public GameObject common;
+    public GameObject uncommon;
+    public GameObject rare;
+    public GameObject legendary;
+    public Transform dropPoint;
+    public Mesh cube;
+    public Mesh sphere;
+    public Mesh capsule;
+    public Mesh cylinder;
+
     // Start is called before the first frame update
     void Start()
     { 
@@ -25,19 +35,24 @@ public class RandomGen : MonoBehaviour
 
     void ReadFile()
     {
-        string path = "Assets/numberstrytwo.txt";
+        string path = "Assets/numberstrythree.txt";
 
         StreamReader reader = new StreamReader(path);
         numbers = reader.ReadToEnd().ToString();
         reader.Close();
-        numbersArray = numbers.Split("\t"[0]);
-        //Debug.Log(numbersArray.Length);
+        numbersArray = numbers.Split("\n"[0]);
+        //for (int i = 0; i < numbersArray.Length; i++)
+        //{
+        //    //Debug.Log(numbersArray[i]);
+        //}
+        ////Debug.Log(numbersArray.Length);
     }
 
-    int GetRandom()
+    public int GetRandom()
     {
         int temp = Random.Range(1, 1000);
         //Debug.Log(numbersArray[temp]);
+        
         randomNumber = int.Parse(numbersArray[temp]);
         return randomNumber;
     }
@@ -47,6 +62,11 @@ public class RandomGen : MonoBehaviour
         string item = " ";
         string quality = " ";
         string manufacturer = " ";
+        float x, y, z;
+        x = GetRandom() / 10.0f;
+        y = GetRandom() / 10.0f;
+        z = GetRandom() / 10.0f;
+        Vector3 newVel = new Vector3(x, y, z);
 
         int value = GetRandom();
         if (value < 250)
@@ -406,6 +426,94 @@ public class RandomGen : MonoBehaviour
             }
         }
 
+
+        if (quality == "Common ")
+        {
+            common.GetComponentInChildren<TextMesh>().text = manufacturer + item;
+            if (item == "Grenade Mod ")
+            {
+                common.GetComponentInChildren<MeshFilter>().mesh = capsule;
+            }
+            else if (item == "Shield ")
+            {
+                common.GetComponentInChildren<MeshFilter>().mesh = sphere;
+            }
+            else if (item == "Gun ")
+            {
+                common.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+            }
+            else
+            {
+                common.GetComponentInChildren<MeshFilter>().mesh = cube;
+            }
+            Instantiate(common, dropPoint);
+        }
+        else if (quality == "Uncommon ")
+        {
+            uncommon.GetComponentInChildren<TextMesh>().text = manufacturer + item;
+            if (item == "Grenade Mod ")
+            {
+                uncommon.GetComponentInChildren<MeshFilter>().mesh = capsule;
+            }
+            else if (item == "Shield ")
+            {
+                uncommon.GetComponentInChildren<MeshFilter>().mesh = sphere;
+            }
+            else if (item == "Gun ")
+            {
+                uncommon.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+            }
+            else
+            {
+                uncommon.GetComponentInChildren<MeshFilter>().mesh = cube;
+            }
+            Instantiate(uncommon, dropPoint);
+        }
+        else if (quality == "Rare ")
+        {
+            rare.GetComponentInChildren<TextMesh>().text = manufacturer + item;
+            if (item == "Grenade Mod ")
+            {
+                rare.GetComponentInChildren<MeshFilter>().mesh = capsule;
+            }
+            else if (item == "Shield ")
+            {
+                rare.GetComponentInChildren<MeshFilter>().mesh = sphere;
+            }
+            else if (item == "Gun ")
+            {
+                rare.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+            }
+            else
+            {
+                rare.GetComponentInChildren<MeshFilter>().mesh = cube;
+            }
+            Instantiate(rare, dropPoint);
+        }
+        else
+        {
+            legendary.GetComponentInChildren<TextMesh>().text = manufacturer + item;
+            if (item == "Grenade Mod ")
+            {
+                legendary.GetComponentInChildren<MeshFilter>().mesh = capsule;
+            }
+            else if (item == "Shield ")
+            {
+                legendary.GetComponentInChildren<MeshFilter>().mesh = sphere;
+            }
+            else if (item == "Gun ")
+            {
+                legendary.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+            }
+            else
+            {
+                legendary.GetComponentInChildren<MeshFilter>().mesh = cube;
+            }
+            Instantiate(legendary, dropPoint);
+        }
+        
+
         Debug.Log(quality + manufacturer + item);
+        
     }
 }
