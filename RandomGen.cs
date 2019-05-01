@@ -18,16 +18,37 @@ public class RandomGen : MonoBehaviour
     public Mesh capsule;
     public Mesh cylinder;
 
+    public Sprite commonGun;
+    public Sprite commonGrenade;
+    public Sprite commonRelic;
+    public Sprite commonShield;
+
+    public Sprite uncommonGun;
+    public Sprite uncommonGrenade;
+    public Sprite uncommonRelic;
+    public Sprite uncommonShield;
+
+    public Sprite rareGun;
+    public Sprite rareGrenade;
+    public Sprite rareRelic;
+    public Sprite rareShield;
+
+    public Sprite LegendaryGun;
+    public Sprite LegendaryGrenade;
+    public Sprite LegendaryRelic;
+    public Sprite LegendaryShield;
+
     // Start is called before the first frame update
     void Start()
     { 
         ReadFile();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetButtonDown("Fire2"))
         {
             DropItem();
         }
@@ -433,18 +454,22 @@ public class RandomGen : MonoBehaviour
             if (item == "Grenade Mod ")
             {
                 common.GetComponentInChildren<MeshFilter>().mesh = capsule;
+                common.GetComponent<DestroyAfterTime>().image = commonGrenade;
             }
             else if (item == "Shield ")
             {
                 common.GetComponentInChildren<MeshFilter>().mesh = sphere;
+                common.GetComponent<DestroyAfterTime>().image = commonShield;
             }
             else if (item == "Gun ")
             {
                 common.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+                common.GetComponent<DestroyAfterTime>().image = commonGun;
             }
             else
             {
                 common.GetComponentInChildren<MeshFilter>().mesh = cube;
+                common.GetComponent<DestroyAfterTime>().image = commonRelic;
             }
             Instantiate(common, dropPoint);
         }
@@ -454,18 +479,22 @@ public class RandomGen : MonoBehaviour
             if (item == "Grenade Mod ")
             {
                 uncommon.GetComponentInChildren<MeshFilter>().mesh = capsule;
+                uncommon.GetComponent<DestroyAfterTime>().image = uncommonGrenade;
             }
             else if (item == "Shield ")
             {
                 uncommon.GetComponentInChildren<MeshFilter>().mesh = sphere;
+                uncommon.GetComponent<DestroyAfterTime>().image = uncommonShield;
             }
             else if (item == "Gun ")
             {
                 uncommon.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+                uncommon.GetComponent<DestroyAfterTime>().image = uncommonGun;
             }
             else
             {
                 uncommon.GetComponentInChildren<MeshFilter>().mesh = cube;
+                uncommon.GetComponent<DestroyAfterTime>().image = uncommonRelic;
             }
             Instantiate(uncommon, dropPoint);
         }
@@ -475,18 +504,22 @@ public class RandomGen : MonoBehaviour
             if (item == "Grenade Mod ")
             {
                 rare.GetComponentInChildren<MeshFilter>().mesh = capsule;
+                rare.GetComponent<DestroyAfterTime>().image = rareGrenade;
             }
             else if (item == "Shield ")
             {
                 rare.GetComponentInChildren<MeshFilter>().mesh = sphere;
+                rare.GetComponent<DestroyAfterTime>().image = rareShield;
             }
             else if (item == "Gun ")
             {
                 rare.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+                rare.GetComponent<DestroyAfterTime>().image = rareGun;
             }
             else
             {
                 rare.GetComponentInChildren<MeshFilter>().mesh = cube;
+                rare.GetComponent<DestroyAfterTime>().image = rareRelic;
             }
             Instantiate(rare, dropPoint);
         }
@@ -496,18 +529,22 @@ public class RandomGen : MonoBehaviour
             if (item == "Grenade Mod ")
             {
                 legendary.GetComponentInChildren<MeshFilter>().mesh = capsule;
+                legendary.GetComponent<DestroyAfterTime>().image = LegendaryGrenade;
             }
             else if (item == "Shield ")
             {
                 legendary.GetComponentInChildren<MeshFilter>().mesh = sphere;
+                legendary.GetComponent<DestroyAfterTime>().image = LegendaryShield;
             }
             else if (item == "Gun ")
             {
                 legendary.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+                legendary.GetComponent<DestroyAfterTime>().image = LegendaryGun;
             }
             else
             {
                 legendary.GetComponentInChildren<MeshFilter>().mesh = cube;
+                legendary.GetComponent<DestroyAfterTime>().image = LegendaryRelic;
             }
             Instantiate(legendary, dropPoint);
         }

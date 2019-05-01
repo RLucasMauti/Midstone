@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DestroyAfterTime : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class DestroyAfterTime : MonoBehaviour
     public Rigidbody rb;
     private Vector3 vel;
     float x, y, z;
-
+    public Sprite image;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,5 +39,10 @@ public class DestroyAfterTime : MonoBehaviour
     void FixedUpdate()
     {
         
+    }
+
+    public Sprite GetImage()
+    {
+        return image;
     }
 }
