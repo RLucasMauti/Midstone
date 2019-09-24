@@ -5,6 +5,12 @@ using System.IO;
 
 public class RandomGen : MonoBehaviour
 {
+    public int commonMax;
+    public int uncommonMax;
+    public int rareMax;
+    public int legendaryMax;
+    public bool droppedNotSpawned;
+
     public string numbers;
     public string[] numbersArray;
     public int randomNumber;
@@ -13,6 +19,8 @@ public class RandomGen : MonoBehaviour
     public GameObject rare;
     public GameObject legendary;
     public Transform dropPoint;
+    public Transform playerDropPoint;
+    public Transform playerPos;
     public Mesh cube;
     public Mesh sphere;
     public Mesh capsule;
@@ -42,13 +50,18 @@ public class RandomGen : MonoBehaviour
     void Start()
     { 
         ReadFile();
-        
+
+        commonMax = 600;
+        uncommonMax = 800;
+        rareMax = 950;
+        legendaryMax = 1000;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             DropItem();
         }
@@ -78,23 +91,139 @@ public class RandomGen : MonoBehaviour
         return randomNumber;
     }
 
+    public void DropFromInv(string invtext)
+    {
+        string[] tempArray = invtext.Split(" "[0]);
+        droppedNotSpawned = true;
+
+        if (tempArray[0] == "Common")
+        {
+            common.GetComponentInChildren<TextMesh>().text = invtext;
+            if (tempArray[2] == "Gun")
+            {
+                common.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+                common.GetComponent<DestroyAfterTime>().image = commonGun;
+            }
+            else if (tempArray[2] == "Shield")
+            {
+                common.GetComponentInChildren<MeshFilter>().mesh = sphere;
+                common.GetComponent<DestroyAfterTime>().image = commonShield;
+            }
+            else if (tempArray[2] == "Relic")
+            {
+                common.GetComponentInChildren<MeshFilter>().mesh = cube;
+                common.GetComponent<DestroyAfterTime>().image = commonRelic;
+            }
+            else if (tempArray[2] == "Grenade")
+            {
+                common.GetComponentInChildren<MeshFilter>().mesh = capsule;
+                common.GetComponent<DestroyAfterTime>().image = commonGrenade;
+            }
+            Vector3 dropDir = playerDropPoint.position - playerPos.position;
+            //Debug.Log(dropDir);
+            common.GetComponent<Rigidbody>().velocity = new Vector3(dropDir.x * 80.0f, 0.0f, dropDir.z * 80.0f);
+            Instantiate(common, playerDropPoint.position, playerPos.rotation);
+        }
+        else if (tempArray[0] == "Uncommon")
+        {
+            uncommon.GetComponentInChildren<TextMesh>().text = invtext;
+            if (tempArray[2] == "Gun")
+            {
+                uncommon.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+                uncommon.GetComponent<DestroyAfterTime>().image = uncommonGun;
+            }
+            else if (tempArray[2] == "Shield")
+            {
+                uncommon.GetComponentInChildren<MeshFilter>().mesh = sphere;
+                uncommon.GetComponent<DestroyAfterTime>().image = uncommonShield;
+            }
+            else if (tempArray[2] == "Relic")
+            {
+                uncommon.GetComponentInChildren<MeshFilter>().mesh = cube;
+                uncommon.GetComponent<DestroyAfterTime>().image = uncommonRelic;
+            }
+            else if (tempArray[2] == "Grenade")
+            {
+                uncommon.GetComponentInChildren<MeshFilter>().mesh = capsule;
+                uncommon.GetComponent<DestroyAfterTime>().image = uncommonGrenade;
+            }
+            Vector3 dropDir = playerDropPoint.position - playerPos.position;
+            uncommon.GetComponent<Rigidbody>().velocity = dropDir;
+            Instantiate(uncommon, playerDropPoint.position, playerPos.rotation);
+        }
+        else if (tempArray[0] == "Rare")
+        {
+            rare.GetComponentInChildren<TextMesh>().text = invtext;
+            if (tempArray[2] == "Gun")
+            {
+                rare.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+                rare.GetComponent<DestroyAfterTime>().image = rareGun;
+            }
+            else if (tempArray[2] == "Shield")
+            {
+                rare.GetComponentInChildren<MeshFilter>().mesh = sphere;
+                rare.GetComponent<DestroyAfterTime>().image = rareShield;
+            }
+            else if (tempArray[2] == "Relic")
+            {
+                rare.GetComponentInChildren<MeshFilter>().mesh = cube;
+                rare.GetComponent<DestroyAfterTime>().image = rareRelic;
+            }
+            else if (tempArray[2] == "Grenade")
+            {
+                rare.GetComponentInChildren<MeshFilter>().mesh = capsule;
+                rare.GetComponent<DestroyAfterTime>().image = rareGrenade;
+            }
+            Vector3 dropDir = playerDropPoint.position - playerPos.position;
+            rare.GetComponent<Rigidbody>().velocity = dropDir;
+            Instantiate(rare, playerDropPoint.position, playerPos.rotation);
+        }
+        else if (tempArray[0] == "Legendary")
+        {
+            legendary.GetComponentInChildren<TextMesh>().text = invtext;
+            if (tempArray[2] == "Gun")
+            {
+                legendary.GetComponentInChildren<MeshFilter>().mesh = cylinder;
+                legendary.GetComponent<DestroyAfterTime>().image = LegendaryGun;
+            }
+            else if (tempArray[2] == "Shield")
+            {
+                legendary.GetComponentInChildren<MeshFilter>().mesh = sphere;
+                legendary.GetComponent<DestroyAfterTime>().image = LegendaryShield;
+            }
+            else if (tempArray[2] == "Relic")
+            {
+                legendary.GetComponentInChildren<MeshFilter>().mesh = cube;
+                legendary.GetComponent<DestroyAfterTime>().image = LegendaryRelic;
+            }
+            else if (tempArray[2] == "Grenade")
+            {
+                legendary.GetComponentInChildren<MeshFilter>().mesh = capsule;
+                legendary.GetComponent<DestroyAfterTime>().image = LegendaryGrenade;
+            }
+            Vector3 dropDir = playerDropPoint.position - playerPos.position;
+            legendary.GetComponent<Rigidbody>().velocity = dropDir;
+            Instantiate(legendary, playerDropPoint.position, playerPos.rotation);
+        }
+        else
+        {
+
+        }
+    }
+
     void DropItem()
     {
         string item = " ";
         string quality = " ";
         string manufacturer = " ";
-        float x, y, z;
-        x = GetRandom() / 10.0f;
-        y = GetRandom() / 10.0f;
-        z = GetRandom() / 10.0f;
-        Vector3 newVel = new Vector3(x, y, z);
+        droppedNotSpawned = false;
 
         int value = GetRandom();
-        if (value < 250)
+        if (value < 500)
         {
             item = "Gun ";
             value = GetRandom();
-            if (value < 250)
+            if (value < commonMax)
             {
                 quality = "Common ";
                 value = GetRandom();
@@ -115,7 +244,7 @@ public class RandomGen : MonoBehaviour
                     manufacturer = "Jakobs ";
                 }
             }
-            else if (value >= 250 && value < 500)
+            else if (value >= commonMax && value < uncommonMax)
             {
                 quality = "Uncommon ";
                 value = GetRandom();
@@ -136,7 +265,7 @@ public class RandomGen : MonoBehaviour
                     manufacturer = "Jakobs ";
                 }
             }
-            else if (value >= 500 && value < 750)
+            else if (value >= uncommonMax && value < rareMax)
             {
                 quality = "Rare ";
                 value = GetRandom();
@@ -157,96 +286,7 @@ public class RandomGen : MonoBehaviour
                     manufacturer = "Jakobs ";
                 }
             }
-            else if (value >= 750 && value < 1000)
-            {
-                quality = "Legendary ";
-                value = GetRandom();
-                if (value < 250)
-                {
-                    manufacturer = "Torgue ";
-                }
-                else if (value >= 250 && value < 500)
-                {
-                    manufacturer = "Maliwan ";
-                }
-                else if (value >= 500 && value < 750)
-                {
-                    manufacturer = "Tediore ";
-                }
-                else if (value >= 750 && value < 1000)
-                {
-                    manufacturer = "Jakobs ";
-                }
-            }
-        }
-        else if (value >= 250 && value < 500)
-        {
-            item = "Shield ";
-            value = GetRandom();
-            if (value < 250)
-            {
-                quality = "Common ";
-                value = GetRandom();
-                if (value < 250)
-                {
-                    manufacturer = "Torgue ";
-                }
-                else if (value >= 250 && value < 500)
-                {
-                    manufacturer = "Maliwan ";
-                }
-                else if (value >= 500 && value < 750)
-                {
-                    manufacturer = "Tediore ";
-                }
-                else if (value >= 750 && value < 1000)
-                {
-                    manufacturer = "Jakobs ";
-                }
-            }
-            else if (value >= 250 && value < 500)
-            {
-                quality = "Uncommon ";
-                value = GetRandom();
-                if (value < 250)
-                {
-                    manufacturer = "Torgue ";
-                }
-                else if (value >= 250 && value < 500)
-                {
-                    manufacturer = "Maliwan ";
-                }
-                else if (value >= 500 && value < 750)
-                {
-                    manufacturer = "Tediore ";
-                }
-                else if (value >= 750 && value < 1000)
-                {
-                    manufacturer = "Jakobs ";
-                }
-            }
-            else if (value >= 500 && value < 750)
-            {
-                quality = "Rare ";
-                value = GetRandom();
-                if (value < 250)
-                {
-                    manufacturer = "Torgue ";
-                }
-                else if (value >= 250 && value < 500)
-                {
-                    manufacturer = "Maliwan ";
-                }
-                else if (value >= 500 && value < 750)
-                {
-                    manufacturer = "Tediore ";
-                }
-                else if (value >= 750 && value < 1000)
-                {
-                    manufacturer = "Jakobs ";
-                }
-            }
-            else if (value >= 750 && value < 1000)
+            else if (value >= rareMax && value <= legendaryMax)
             {
                 quality = "Legendary ";
                 value = GetRandom();
@@ -270,9 +310,9 @@ public class RandomGen : MonoBehaviour
         }
         else if (value >= 500 && value < 750)
         {
-            item = "Relic ";
+            item = "Shield ";
             value = GetRandom();
-            if (value < 250)
+            if (value < commonMax)
             {
                 quality = "Common ";
                 value = GetRandom();
@@ -293,7 +333,7 @@ public class RandomGen : MonoBehaviour
                     manufacturer = "Jakobs ";
                 }
             }
-            else if (value >= 250 && value < 500)
+            else if (value >= commonMax && value < uncommonMax)
             {
                 quality = "Uncommon ";
                 value = GetRandom();
@@ -314,7 +354,7 @@ public class RandomGen : MonoBehaviour
                     manufacturer = "Jakobs ";
                 }
             }
-            else if (value >= 500 && value < 750)
+            else if (value >= uncommonMax && value < rareMax)
             {
                 quality = "Rare ";
                 value = GetRandom();
@@ -335,7 +375,7 @@ public class RandomGen : MonoBehaviour
                     manufacturer = "Jakobs ";
                 }
             }
-            else if (value >= 750 && value < 1000)
+            else if (value >= rareMax && value <= legendaryMax)
             {
                 quality = "Legendary ";
                 value = GetRandom();
@@ -357,11 +397,11 @@ public class RandomGen : MonoBehaviour
                 }
             }
         }
-        else if (value >= 750 && value < 1000)
+        else if (value >= 750 && value < 850)
         {
-            item = "Grenade Mod ";
+            item = "Relic ";
             value = GetRandom();
-            if (value < 250)
+            if (value < commonMax)
             {
                 quality = "Common ";
                 value = GetRandom();
@@ -382,7 +422,7 @@ public class RandomGen : MonoBehaviour
                     manufacturer = "Jakobs ";
                 }
             }
-            else if (value >= 250 && value < 500)
+            else if (value >= commonMax && value < uncommonMax)
             {
                 quality = "Uncommon ";
                 value = GetRandom();
@@ -403,7 +443,7 @@ public class RandomGen : MonoBehaviour
                     manufacturer = "Jakobs ";
                 }
             }
-            else if (value >= 500 && value < 750)
+            else if (value >= uncommonMax && value < rareMax)
             {
                 quality = "Rare ";
                 value = GetRandom();
@@ -424,7 +464,96 @@ public class RandomGen : MonoBehaviour
                     manufacturer = "Jakobs ";
                 }
             }
-            else if (value >= 750 && value < 1000)
+            else if (value >= rareMax && value <= legendaryMax)
+            {
+                quality = "Legendary ";
+                value = GetRandom();
+                if (value < 250)
+                {
+                    manufacturer = "Torgue ";
+                }
+                else if (value >= 250 && value < 500)
+                {
+                    manufacturer = "Maliwan ";
+                }
+                else if (value >= 500 && value < 750)
+                {
+                    manufacturer = "Tediore ";
+                }
+                else if (value >= 750 && value < 1000)
+                {
+                    manufacturer = "Jakobs ";
+                }
+            }
+        }
+        else if (value >= 850 && value < 1000)
+        {
+            item = "Grenade Mod ";
+            value = GetRandom();
+            if (value < commonMax)
+            {
+                quality = "Common ";
+                value = GetRandom();
+                if (value < 250)
+                {
+                    manufacturer = "Torgue ";
+                }
+                else if (value >= 250 && value < 500)
+                {
+                    manufacturer = "Maliwan ";
+                }
+                else if (value >= 500 && value < 750)
+                {
+                    manufacturer = "Tediore ";
+                }
+                else if (value >= 750 && value < 1000)
+                {
+                    manufacturer = "Jakobs ";
+                }
+            }
+            else if (value >= commonMax && value < uncommonMax)
+            {
+                quality = "Uncommon ";
+                value = GetRandom();
+                if (value < 250)
+                {
+                    manufacturer = "Torgue ";
+                }
+                else if (value >= 250 && value < 500)
+                {
+                    manufacturer = "Maliwan ";
+                }
+                else if (value >= 500 && value < 750)
+                {
+                    manufacturer = "Tediore ";
+                }
+                else if (value >= 750 && value < 1000)
+                {
+                    manufacturer = "Jakobs ";
+                }
+            }
+            else if (value >= uncommonMax && value < rareMax)
+            {
+                quality = "Rare ";
+                value = GetRandom();
+                if (value < 250)
+                {
+                    manufacturer = "Torgue ";
+                }
+                else if (value >= 250 && value < 500)
+                {
+                    manufacturer = "Maliwan ";
+                }
+                else if (value >= 500 && value < 750)
+                {
+                    manufacturer = "Tediore ";
+                }
+                else if (value >= 750 && value < 1000)
+                {
+                    manufacturer = "Jakobs ";
+                }
+            }
+            else if (value >= rareMax && value <= legendaryMax)
             {
                 quality = "Legendary ";
                 value = GetRandom();
@@ -450,7 +579,7 @@ public class RandomGen : MonoBehaviour
 
         if (quality == "Common ")
         {
-            common.GetComponentInChildren<TextMesh>().text = manufacturer + item;
+            common.GetComponentInChildren<TextMesh>().text = quality + manufacturer + item;
             if (item == "Grenade Mod ")
             {
                 common.GetComponentInChildren<MeshFilter>().mesh = capsule;
@@ -475,7 +604,7 @@ public class RandomGen : MonoBehaviour
         }
         else if (quality == "Uncommon ")
         {
-            uncommon.GetComponentInChildren<TextMesh>().text = manufacturer + item;
+            uncommon.GetComponentInChildren<TextMesh>().text = quality + manufacturer + item;
             if (item == "Grenade Mod ")
             {
                 uncommon.GetComponentInChildren<MeshFilter>().mesh = capsule;
@@ -500,7 +629,7 @@ public class RandomGen : MonoBehaviour
         }
         else if (quality == "Rare ")
         {
-            rare.GetComponentInChildren<TextMesh>().text = manufacturer + item;
+            rare.GetComponentInChildren<TextMesh>().text = quality + manufacturer + item;
             if (item == "Grenade Mod ")
             {
                 rare.GetComponentInChildren<MeshFilter>().mesh = capsule;
@@ -525,7 +654,7 @@ public class RandomGen : MonoBehaviour
         }
         else
         {
-            legendary.GetComponentInChildren<TextMesh>().text = manufacturer + item;
+            legendary.GetComponentInChildren<TextMesh>().text = quality + manufacturer + item;
             if (item == "Grenade Mod ")
             {
                 legendary.GetComponentInChildren<MeshFilter>().mesh = capsule;

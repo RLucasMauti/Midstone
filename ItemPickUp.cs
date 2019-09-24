@@ -22,6 +22,7 @@ public class ItemPickUp : MonoBehaviour
                 if (inv.inventory[inv.slotIndex].gameObject.GetComponent<InventorySlot>().itemIcon.sprite == inv.emptySlot)
                 {
                     inv.tempItem = other.gameObject.GetComponent<DestroyAfterTime>().GetImage();
+                    inv.inventory[inv.slotIndex].gameObject.GetComponent<InventorySlot>().itemText = other.gameObject.GetComponentInChildren<TextMesh>().text;
                     inv.PickUp();
                     Destroy(other.gameObject);
                 }

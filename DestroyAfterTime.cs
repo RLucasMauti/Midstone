@@ -15,23 +15,31 @@ public class DestroyAfterTime : MonoBehaviour
     {
         rand = GameObject.Find("ObjectDropPoint").GetComponent<RandomGen>();
         rb = GetComponentInParent<Rigidbody>();
-        x = rand.GetRandom() / 100.0f;
-        y = rand.GetRandom() / 100.0f;
-        z = rand.GetRandom() / 100.0f;
-        if (x < 5.0f)
-        {
-            x *= -1;
+        if (rand.droppedNotSpawned == false) { 
+            x = rand.GetRandom() / 100.0f;
+            y = rand.GetRandom() / 100.0f;
+            z = rand.GetRandom() / 100.0f;
+            if (x < 5.0f)
+            {
+                x -= 5.0f;
+            }
+            if (y < 5.0f)
+            {
+                y -= 5.0f;
+            }
+            if (z < 5.0f)
+            {
+                z -= 5.0f;
+            }
+            vel = new Vector3(x, y, z);
+            rb.velocity = vel;
         }
-        if (y < 5.0f)
+        else if (rand.droppedNotSpawned == true)
         {
-            y *= -1;
+            Vector3 dropDir = rand.playerDropPoint.position - rand.playerPos.position;
+            rb.velocity = new Vector3(dropDir.x * 50 * Time.deltaTime , 0.0f, dropDir.z * 50 * Time.deltaTime);
         }
-        if (z < 5.0f)
-        {
-            z *= -1;
-        }
-        vel = new Vector3(x, y, z);
-        rb.velocity = vel;
+
         Destroy(this.gameObject, 60.0f);
     }
 

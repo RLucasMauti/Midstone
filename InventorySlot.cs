@@ -6,5 +6,10 @@ using UnityEngine.UI;
 public class InventorySlot : MonoBehaviour
 {
     public Image itemIcon;
- 
+    public string itemText;
+
+    private void Start()
+    {
+        itemText = " ";
+    }
 }
